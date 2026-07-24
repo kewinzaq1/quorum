@@ -47,5 +47,8 @@ All You.com calls are stubbed in tests; the suite never spends API credits.
 
 The repository-root `render.yaml` provisions one Ruby web service and one
 PostgreSQL database. In Render, set `RAILS_MASTER_KEY` from
-`config/master.key` and add `YDC_API_KEY` as a secret. The build script installs
-dependencies, compiles assets, precompiles Rails assets, and runs migrations.
+`config/master.key`. The first deployment intentionally enables the visibly
+labeled demo provider so a fresh Blueprint works without spending API credits.
+To enable live research, add `YDC_API_KEY` as a secret and set `DEMO_MODE=false`.
+The build script installs dependencies, compiles assets, precompiles Rails
+assets, and runs migrations.

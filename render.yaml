@@ -20,8 +20,8 @@ services:
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
-      - key: YDC_API_KEY
-        sync: false
+      - key: DEMO_MODE
+        value: "true"
       - key: WEB_CONCURRENCY
         value: "2"
       - key: RAILS_ENV
