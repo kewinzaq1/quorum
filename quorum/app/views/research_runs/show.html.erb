@@ -1,0 +1,44 @@
+<% content_for :title, "Finding the honest yes — Quorum" %>
+<% content_for :body_class, "quorum-app q-research-page" %>
+
+<main
+  class="q-research-shell"
+  data-controller="research-poll"
+  data-research-poll-url-value="<%= lunch_room_research_run_path(@lunch_room, @research_run, format: :json) %>"
+  data-research-poll-room-url-value="<%= lunch_room_path(@lunch_room) %>"
+  data-research-poll-status-value="<%= @research_run.status %>"
+>
+  <%= render "shared/brand", light: true %>
+
+  <div class="q-research-copy">
+    <% if @research_run.failed? %>
+      <p class="q-eyebrow">We hit a snag</p>
+      <h1>The search stopped<br>before lunch did.</h1>
+      <p data-research-poll-target="message"><%= @research_run.error_message %></p>
+      <%= link_to "Back to the room →", lunch_room_path(@lunch_room), class: "btn q-button q-button-light q-button-large" %>
+    <% elsif @research_run.completed? %>
+      <p class="q-eyebrow">That’s a quorum</p>
+      <h1>The shortlist<br>is ready.</h1>
+      <p data-research-poll-target="message">Every option has been checked against the people actually coming.</p>
+      <%= link_to "See the honest options →", lunch_room_path(@lunch_room), class: "btn q-button q-button-light q-button-large" %>
+    <% else %>
+      <p class="q-eyebrow">Looking for the overlap</p>
+      <h1>We’re checking<br>the things that <em>matter.</em></h1>
+      <p data-research-poll-target="message">Gathering everyone’s non-negotiables…</p>
+    <% end %>
+  </div>
+
+  <% unless @research_run.terminal? %>
+    <div class="q-research-progress">
+      <% [["searching", "Looking nearby", "Current places, not stale lists"], ["reading", "Reading the details", "Menus, hours, prices, walk time"], ["reasoning", "Checking every person", "No hard constraint left behind"], ["completed", "Finding the honest yes", "A short list with receipts"]].each_with_index do |(status, title, detail), index| %>
+        <div class="q-research-step <%= "is-active" if index.zero? %>" data-research-poll-target="step" data-status="<%= status %>">
+          <span><%= format("%02d", index + 1) %></span>
+          <div><strong><%= title %></strong><small><%= detail %></small></div>
+          <b>✓</b>
+        </div>
+      <% end %>
+    </div>
+    <div class="q-research-orbit" aria-hidden="true"><span></span><i></i><b></b></div>
+    <p class="q-research-time">Usually 30–90 seconds. This page updates itself.</p>
+  <% end %>
+</main>

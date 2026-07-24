@@ -1,0 +1,29 @@
+one:
+  lunch_room: one
+  research_run: one
+  name: Souvla
+  url: https://example.com/souvla
+  address: 517 Hayes St
+  cuisine: Greek
+  price_level: $
+  walk_minutes: 8
+  open_now: true
+  summary: Works for everyone.
+  match_score: 92
+  status: 1
+  metadata: {}
+
+two:
+  lunch_room: two
+  research_run: two
+  name: Far Away Bowl
+  url: https://example.com/far-away
+  address: 100 Other St
+  cuisine: Korean
+  price_level: $$
+  walk_minutes: 20
+  open_now: true
+  summary: Too far for this group.
+  match_score: 42
+  status: 0
+  metadata: {}

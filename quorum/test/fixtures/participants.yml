@@ -1,0 +1,15 @@
+one:
+  lunch_room: one
+  name: Maya
+  diet: Vegetarian
+  max_walk_minutes: 12
+  budget_cents: 2500
+  hard_stop: 2026-07-24 13:00:00
+
+two:
+  lunch_room: two
+  name: Jon
+  dislikes: Sushi
+  max_walk_minutes: 10
+  budget_cents: 2000
+  hard_stop: 2026-07-24 13:30:00

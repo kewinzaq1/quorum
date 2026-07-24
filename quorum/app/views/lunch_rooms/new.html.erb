@@ -1,0 +1,65 @@
+<% content_for :title, "Start a lunch room — Quorum" %>
+<% content_for :body_class, "quorum-app q-form-page" %>
+
+<%= render "shared/header", compact: true %>
+
+<main class="q-create-shell q-shell">
+  <div class="q-create-intro">
+    <p class="q-eyebrow">One room. One honest decision.</p>
+    <h1>Let’s get everyone<br>to the same <em>table.</em></h1>
+    <p>Start with the limits shared by the whole group. Everyone can add their own needs on the next screen.</p>
+    <div class="q-create-note">
+      <span aria-hidden="true">↗</span>
+      <p><strong>No account needed.</strong><br>You’ll get a private link to share with the people coming to lunch.</p>
+    </div>
+  </div>
+
+  <div class="q-form-card card">
+    <div class="q-form-card-head">
+      <span>01</span>
+      <div><h2>Set the lunch window</h2><p>Enough context to rule out the impossible.</p></div>
+    </div>
+
+    <%= form_with model: @lunch_room, class: "q-form" do |form| %>
+      <% if @lunch_room.errors.any? %>
+        <div class="q-form-errors" role="alert">
+          <strong>One quick fix:</strong>
+          <%= @lunch_room.errors.full_messages.to_sentence %>
+        </div>
+      <% end %>
+
+      <label class="form-control q-field q-field-wide">
+        <span class="label-text">What should we call this?</span>
+        <%= form.text_field :name, class: "input input-bordered", required: true, placeholder: "Lunch with the team" %>
+      </label>
+
+      <label class="form-control q-field q-field-wide">
+        <span class="label-text">Where is everyone leaving from?</span>
+        <%= form.text_field :origin_text, class: "input input-bordered", required: true, placeholder: "AWS Builder Loft, 525 Market St" %>
+        <small>A building, address, or nearby landmark works.</small>
+      </label>
+
+      <div class="q-form-row">
+        <label class="form-control q-field">
+          <span class="label-text">Lunch starts</span>
+          <%= form.datetime_local_field :lunch_at, class: "input input-bordered" %>
+        </label>
+        <label class="form-control q-field">
+          <span class="label-text">Everyone back by</span>
+          <%= form.datetime_local_field :return_by, class: "input input-bordered" %>
+        </label>
+      </div>
+
+      <label class="form-control q-field">
+        <span class="label-text">Comfortable max per person</span>
+        <div class="q-money-input">
+          <span>$</span>
+          <%= form.number_field :group_budget_dollars, value: @lunch_room.group_budget_dollars, class: "input input-bordered", min: 1, step: 1 %>
+        </div>
+      </label>
+
+      <%= form.submit "Make the room →", class: "btn q-button q-button-large q-submit" %>
+      <p class="q-form-trust">No login · No mailing list · Just lunch</p>
+    <% end %>
+  </div>
+</main>

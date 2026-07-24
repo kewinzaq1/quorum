@@ -1,0 +1,163 @@
+<% content_for :title, "#{@lunch_room.name} — Quorum" %>
+<% content_for :body_class, "quorum-app q-room-page" %>
+
+<%= render "shared/header", compact: true %>
+
+<main class="q-room-shell q-shell">
+  <header class="q-room-page-head">
+    <div>
+      <p class="q-eyebrow"><%= @lunch_room.locked? ? "Decision made" : "Shared lunch room" %></p>
+      <h1><%= @lunch_room.name %></h1>
+      <p><span>⌖</span> <%= @lunch_room.origin_text %> · <%= @lunch_room.lunch_at&.strftime("%-I:%M %p") %>–<%= @lunch_room.return_by&.strftime("%-I:%M %p") %></p>
+    </div>
+    <div class="q-share-box" data-controller="clipboard">
+      <span>Invite the group</span>
+      <div>
+        <input class="input" readonly value="<%= lunch_room_url(@lunch_room) %>" data-clipboard-target="source" aria-label="Shareable room link">
+        <button class="btn q-copy-button" data-action="clipboard#copy" data-clipboard-target="button">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <% if @lunch_room.locked_candidate.present? %>
+    <section class="q-locked-banner" id="decision">
+      <div class="q-lock-check">✓</div>
+      <div>
+        <p>Phones down. Decision made.</p>
+        <h2><%= @lunch_room.locked_candidate.name %></h2>
+        <span><%= @lunch_room.locked_candidate.address %> · <%= @lunch_room.locked_candidate.walk_minutes %> min walk</span>
+      </div>
+      <% if @lunch_room.backup_candidate %>
+        <div class="q-backup-label">Backup<br><strong><%= @lunch_room.backup_candidate.name %></strong></div>
+      <% end %>
+    </section>
+  <% end %>
+
+  <% if @candidates.any? %>
+    <section class="q-decision-section" id="decision">
+      <div class="q-decision-intro">
+        <p class="q-section-number">The shortest path to yes</p>
+        <h2><%= @lunch_room.locked? ? "Here’s where you’re going." : "A short, honest list." %></h2>
+        <p>Ranked against this group’s real limits. Expand any place to see who it works for and the live sources behind it.</p>
+        <% if @research_run&.demo? %><span class="badge q-demo-badge">Demo data</span><% end %>
+      </div>
+
+      <div class="q-candidate-list">
+        <% @candidates.each_with_index do |candidate, index| %>
+          <article class="q-result-card card <%= "is-top" if index.zero? && !candidate.rejected? %> <%= "is-rejected" if candidate.rejected? %>">
+            <div class="q-result-rank"><%= candidate.rejected? ? "OUT" : format("%02d", index + 1) %></div>
+            <div class="q-result-main">
+              <div class="q-result-title">
+                <div>
+                  <div class="q-result-badges">
+                    <% if index.zero? && !candidate.rejected? %><span class="badge q-best-badge">Best fit</span><% end %>
+                    <span class="badge"><%= candidate.cuisine %></span>
+                  </div>
+                  <h3><%= candidate.name %></h3>
+                  <p><%= candidate.address %></p>
+                </div>
+                <div class="q-score <%= "is-low" if candidate.rejected? %>"><strong><%= candidate.match_score %></strong><span>% fit</span></div>
+              </div>
+
+              <div class="q-result-facts">
+                <span><b><%= candidate.open_now? ? "Open" : "Hours unclear" %></b> now</span>
+                <span><b><%= candidate.walk_minutes %> min</b> walk</span>
+                <span><b><%= candidate.price_label %></b> per person</span>
+              </div>
+              <p class="q-result-summary"><%= candidate.summary %></p>
+
+              <% if candidate.candidate_assessments.any? %>
+                <div class="q-fit-grid">
+                  <% candidate.candidate_assessments.each do |assessment| %>
+                    <div class="<%= assessment.fits? ? "is-fit" : "is-miss" %>">
+                      <span><%= assessment.fits? ? "✓" : "×" %></span>
+                      <div><b><%= assessment.participant.name %></b><small><%= assessment.verdict %></small></div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <div class="q-result-footer">
+                <details>
+                  <summary>Why we trust this <span>+</span></summary>
+                  <div class="q-sources">
+                    <% candidate.sources.each do |source| %>
+                      <%= link_to source.url, target: "_blank", rel: "noreferrer" do %>
+                        <strong><%= source.title %> ↗</strong>
+                        <span><%= source.snippet %></span>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </details>
+                <% unless candidate.rejected? %>
+                  <div class="q-result-actions">
+                    <%= button_to "Keep as backup", lunch_room_selection_path(@lunch_room), method: :patch, params: { candidate_id: candidate.id, choice: "backup" }, class: "btn q-secondary-button" %>
+                    <%= button_to(@lunch_room.locked_candidate == candidate ? "Lunch locked ✓" : "Lock this lunch →", lunch_room_selection_path(@lunch_room), method: :patch, params: { candidate_id: candidate.id, choice: "lock" }, class: "btn q-button", disabled: @lunch_room.locked_candidate == candidate) %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </section>
+  <% else %>
+    <section class="q-people-section" id="people">
+      <div class="q-people-intro">
+        <p class="q-section-number">01 — Who needs a say?</p>
+        <h2>Put the quiet constraints<br>on the <em>table.</em></h2>
+        <p>Preferences can bend. Hard stops cannot. Add just enough to keep someone from agreeing to a lunch that never worked for them.</p>
+      </div>
+
+      <div class="q-people-panel card">
+        <div class="q-people-list">
+          <% if @lunch_room.participants.any? %>
+            <% @lunch_room.participants.each_with_index do |participant, index| %>
+              <div class="q-person-row">
+                <span><%= participant.name.first.upcase %></span>
+                <div><strong><%= participant.name %></strong><small><%= participant.constraints.join(" · ").presence || "No hard constraints" %></small></div>
+                <b><%= format("%02d", index + 1) %></b>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="q-empty-person">
+              <span>“</span>
+              <p>The person who says “anything”<br>usually means “anything, except…”</p>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="q-add-person">
+          <h3>Add someone</h3>
+          <%= form_with model: [@lunch_room, @participant], class: "q-form" do |form| %>
+            <div class="q-form-row">
+              <label class="form-control q-field"><span class="label-text">Name</span><%= form.text_field :name, class: "input input-bordered", required: true, placeholder: "Maya" %></label>
+              <label class="form-control q-field"><span class="label-text">Diet</span><%= form.text_field :diet, class: "input input-bordered", placeholder: "Vegetarian" %></label>
+            </div>
+            <label class="form-control q-field q-field-wide"><span class="label-text">Hard no’s</span><%= form.text_field :dislikes, class: "input input-bordered", placeholder: "Sushi, peanuts, noisy rooms…" %></label>
+            <div class="q-form-row q-form-row-three">
+              <label class="form-control q-field"><span class="label-text">Max walk</span><%= form.number_field :max_walk_minutes, class: "input input-bordered", placeholder: "12", min: 1 %><small>minutes</small></label>
+              <label class="form-control q-field"><span class="label-text">Max spend</span><%= form.number_field :budget_dollars, class: "input input-bordered", placeholder: "20", min: 1 %><small>dollars</small></label>
+              <label class="form-control q-field"><span class="label-text">Hard stop</span><%= form.datetime_local_field :hard_stop, class: "input input-bordered" %></label>
+            </div>
+            <%= form.submit "Add to the table +", class: "btn q-secondary-button q-add-submit" %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-ready-strip">
+      <div>
+        <span><%= @lunch_room.participants.count %></span>
+        <p><strong><%= @lunch_room.participants.count == 1 ? "person has" : "people have" %> a say.</strong><br>Ready to stop discussing lunch?</p>
+      </div>
+      <%= button_to lunch_room_research_runs_path(@lunch_room), method: :post, class: "btn q-button q-button-large", disabled: @lunch_room.participants.empty? do %>
+        Find the honest yes <span aria-hidden="true">→</span>
+      <% end %>
+    </section>
+  <% end %>
+</main>
+
+<footer class="q-mini-footer">
+  <div class="q-shell">Live research by <a href="https://you.com" target="_blank" rel="noreferrer">You.com</a> · Built to deploy on <a href="https://render.com" target="_blank" rel="noreferrer">Render</a></div>
+</footer>

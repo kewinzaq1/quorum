@@ -1,0 +1,14 @@
+<header class="q-header <%= local_assigns[:dark] ? "is-dark" : "" %>">
+  <div class="q-shell q-nav">
+    <%= render "shared/brand", light: local_assigns[:dark] %>
+    <% unless local_assigns[:compact] %>
+      <nav aria-label="Main navigation">
+        <%= link_to "The problem", root_path(anchor: "the-problem") %>
+        <%= link_to "How it works", root_path(anchor: "how-it-works") %>
+      </nav>
+    <% end %>
+    <%= link_to new_lunch_room_path, class: "btn q-button q-button-small" do %>
+      Find lunch <span aria-hidden="true">→</span>
+    <% end %>
+  </div>
+</header>

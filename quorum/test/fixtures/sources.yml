@@ -1,0 +1,15 @@
+one:
+  research_run: one
+  candidate: one
+  url: https://example.com/souvla/menu
+  title: Souvla menu
+  snippet: Current menu and opening hours.
+  source_type: web
+
+two:
+  research_run: two
+  candidate: two
+  url: https://example.com/far-away/menu
+  title: Far Away Bowl menu
+  snippet: Current menu and opening hours.
+  source_type: web

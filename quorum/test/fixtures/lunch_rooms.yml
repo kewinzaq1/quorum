@@ -1,0 +1,17 @@
+one:
+  name: Builder Loft lunch
+  origin_text: 525 Market St, San Francisco
+  lunch_at: 2026-07-24 12:15:00
+  return_by: 2026-07-24 13:00:00
+  group_budget_cents: 2500
+  status: 2
+  public_token: builder-loft-test
+
+two:
+  name: Studio lunch
+  origin_text: Ferry Building, San Francisco
+  lunch_at: 2026-07-24 12:30:00
+  return_by: 2026-07-24 13:30:00
+  group_budget_cents: 2000
+  status: 0
+  public_token: studio-lunch-test

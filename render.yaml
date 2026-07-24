@@ -1,0 +1,32 @@
+databases:
+  - name: quorum-db
+    plan: free
+    databaseName: quorum
+    user: quorum
+
+services:
+  - type: web
+    name: quorum-lunch
+    runtime: ruby
+    plan: free
+    rootDir: quorum
+    buildCommand: ./bin/render-build.sh
+    startCommand: bundle exec puma -C config/puma.rb
+    healthCheckPath: /up
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: quorum-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: YDC_API_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: "2"
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: enabled
+      - key: RAILS_SERVE_STATIC_FILES
+        value: enabled

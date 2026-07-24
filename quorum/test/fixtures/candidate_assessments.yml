@@ -1,0 +1,15 @@
+one:
+  candidate: one
+  participant: one
+  fits: true
+  verdict: Vegetarian option confirmed
+  reasons:
+    - Menu lists a vegetarian main
+
+two:
+  candidate: two
+  participant: two
+  fits: false
+  verdict: Too far
+  reasons:
+    - Walk exceeds ten minutes

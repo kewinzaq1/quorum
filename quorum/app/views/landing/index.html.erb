@@ -1,0 +1,134 @@
+<% content_for :title, "Quorum — everyone gets a say, lunch gets decided" %>
+<% content_for :description, "Stop turning lunch into a meeting. Quorum finds the nearby place your whole group can actually say yes to." %>
+<% content_for :body_class, "quorum-page" %>
+
+<%= render "shared/header" %>
+
+<main>
+  <section class="q-hero q-shell" id="top">
+    <div class="q-hero-copy">
+      <p class="q-eyebrow">A small rescue for the daily lunch spiral</p>
+      <h1>Everyone’s hungry.<br>Nobody wants<br>to <em>choose.</em></h1>
+      <p class="q-lede">
+        The lunch break gets shorter. The group chat gets longer. Quorum finds
+        the place everyone can actually say yes to.
+      </p>
+      <div class="q-hero-actions">
+        <%= link_to new_lunch_room_path, class: "btn q-button q-button-large" do %>
+          Decide lunch together <span aria-hidden="true">→</span>
+        <% end %>
+        <a class="q-text-link" href="#the-problem">See the familiar chaos <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+
+    <div class="q-hero-scene">
+      <%= image_tag "quorum/hero-table.png", alt: "Six coworkers around a lunch table, still trying to decide where to eat" %>
+      <span class="q-chat-fragment q-chat-one">anything works</span>
+      <span class="q-chat-fragment q-chat-two">not sushi again</span>
+      <span class="q-chat-fragment q-chat-three">too far</span>
+      <span class="q-chat-fragment q-chat-four">I only have 35 min</span>
+    </div>
+
+    <a class="q-next-story" href="#the-problem">
+      <span>It starts with <em>one</em><br>harmless question.</span>
+      <span aria-hidden="true">↓</span>
+    </a>
+  </section>
+
+  <section class="q-problem" id="the-problem">
+    <div class="q-shell">
+      <div class="q-problem-heading">
+        <div>
+          <p class="q-section-number">01 — You know this part</p>
+          <h2>It starts with one <em>harmless</em> question.</h2>
+        </div>
+        <%= image_tag "quorum/problem-table.png", alt: "Three coworkers waiting for someone to make a lunch decision" %>
+      </div>
+
+      <ol class="q-conversation" aria-label="A familiar lunch conversation">
+        <li class="is-opening"><time>12:03</time><b>You</b><span>Where should we eat?</span></li>
+        <li><time>12:11</time><b>M</b><span>Anything works for me.</span></li>
+        <li class="is-right"><b>J</b><span>How about Thai?</span></li>
+        <li><b>M</b><span>Had it yesterday.</span></li>
+        <li class="is-right"><b>J</b><span>Sushi?</span></li>
+        <li><time>12:18</time><b>M</b><span>Too expensive.</span></li>
+        <li class="is-right"><b>J</b><span>There’s that place on 2nd.</span></li>
+        <li><b>M</b><span>Twenty minutes away.</span></li>
+        <li class="is-right"><time>12:26</time><b>You</b><span>Wait—does anyone have a hard stop?</span></li>
+      </ol>
+
+      <div class="q-problem-close">
+        <h3>Somehow, lunch<br>became <em>a meeting.</em></h3>
+        <p>
+          The problem isn’t finding places. It’s finding the place this group
+          can agree on, <em>right now.</em>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="q-solution" id="how-it-works">
+    <div class="q-shell q-solution-grid">
+      <div class="q-solution-copy">
+        <p class="q-section-number">02 — Give everyone a say</p>
+        <h2>Not a vote.<br>A place that <em>fits.</em></h2>
+        <p>
+          Tell Quorum who’s coming and what actually matters—walking time,
+          budget, dietary needs, the one person who has to be back by one.
+        </p>
+        <ul class="q-how-list">
+          <li><span>1</span><div><strong>Make one shared room</strong><small>No accounts. Just send the link.</small></div></li>
+          <li><span>2</span><div><strong>Let the hard limits speak</strong><small>No preference gets buried in the thread.</small></div></li>
+          <li><span>3</span><div><strong>Lock the first honest yes</strong><small>Current menus, hours, distance, and receipts included.</small></div></li>
+        </ul>
+      </div>
+
+      <div class="q-demo-room card">
+        <div class="q-demo-head">
+          <div>
+            <span class="q-live-dot"></span>
+            <small>Lunch with the team</small>
+          </div>
+          <span>4 people · 12 min max</span>
+        </div>
+        <div class="q-demo-people">
+          <%= image_tag "quorum/team-portraits.png", alt: "Portraits of four teammates" %>
+          <div><b>Maya</b><span>vegetarian</span></div>
+          <div><b>Jon</b><span>$20 max</span></div>
+          <div><b>Leah</b><span>back by 1</span></div>
+          <div><b>Sam</b><span>no sushi</span></div>
+        </div>
+        <div class="q-demo-candidate is-out"><span>🥪</span><div><b>Boardwalk Deli</b><small>No vegetarian main</small></div><strong>× Out</strong></div>
+        <div class="q-demo-candidate is-out"><span>🍲</span><div><b>Seoul Bowl</b><small>18 minutes away</small></div><strong>× Out</strong></div>
+        <div class="q-demo-candidate is-match"><span>🥗</span><div><b>Souvla</b><small>Open · 8 min walk · $</small></div><strong>✓ 92% fit</strong></div>
+        <div class="q-demo-consensus">
+          <span>✓</span>
+          <div><b>Everyone can make this one.</b><small>With 19 minutes to actually eat.</small></div>
+        </div>
+        <%= link_to "Lock in Souvla →", new_lunch_room_path, class: "btn q-button q-demo-lock" %>
+      </div>
+    </div>
+  </section>
+
+  <section class="q-relief">
+    <div class="q-shell q-relief-grid">
+      <%= image_tag "quorum/lunch-together.png", alt: "Coworkers enjoying lunch together after the decision is made" %>
+      <div>
+        <p class="q-section-number">03 — Get the break back</p>
+        <h2>Decide in minutes.<br>Eat while it’s <em>still lunch.</em></h2>
+        <p>The win isn’t a smarter list. It’s everyone putting their phone away and walking out the door.</p>
+        <%= link_to new_lunch_room_path, class: "btn q-button q-button-light q-button-large" do %>
+          Start a lunch room <span aria-hidden="true">→</span>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="q-footer">
+  <div class="q-shell">
+    <%= render "shared/brand", light: true %>
+    <p>Built for the You.com Agentic Hackathon at AWS Builder Loft.</p>
+    <p class="q-sponsor-line">Live research by <a href="https://you.com" target="_blank" rel="noreferrer">You.com</a> · Deployed on <a href="https://render.com" target="_blank" rel="noreferrer">Render</a></p>
+  </div>
+</footer>

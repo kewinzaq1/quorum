@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+system("npm", "run", "build", exception: true)
+system("npm", "run", "build:css", exception: true)
+exec "./bin/rails", "server", *ARGV
